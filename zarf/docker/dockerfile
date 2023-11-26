@@ -1,0 +1,21 @@
+FROM golang:1.21.4 as build_kubrakafka
+ENV CGO_ENABLED 0
+ARG BUILD_REF
+
+COPY . /cmd
+
+WORKDIR /cmd
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
+FROM alpine:3.18
+ARG BUILD_DATE
+ARG BUILD_REF
+
+# Add permissions for non-root container user.
+RUN addgroup -g 1000 -S kubrakafka && \
+		adduser -u 1000 -h /cmd -G kubrakafka -S kubrakafka
+
+COPY --from=build_kubrakafka --chown=kubrakafka:kubrakafka /cmd/kubrakafka /cmd/kubrakafka
+WORKDIR /cmd
+USER kubrakafka
+CMD ["./kubrakafka"]

@@ -1,0 +1,45 @@
+# Goland/JetBrains
+.idea
+
+# Editor files
+.idea/
+*.iml
+*.swp
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.o
+*.a
+*.so
+*.dylib
+
+# Mac
+.DS_Store
+
+# Backup files
+*~*
+
+# Folders
+_obj
+_test
+
+# Environment credentials
+.env
+.env.*
+
+# TF Module directory
+.terraform
+
+# Coverage calculations
+c.out
+
+*.backup
+playground/
+environment/state.json
+*.tfvars
+private-key.gpg
+
+# CSV files
+.csv
