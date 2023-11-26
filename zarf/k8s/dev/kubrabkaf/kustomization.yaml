@@ -7,5 +7,5 @@ patches:
 - path: ./dev-patch-service.yaml
 images:
 - name: service-image
-  newName: kubrabkaf/kubrabkaf
+  newName: fiiii/kubrabkaf/kubrabkaf-api
   newTag: 0.0.1

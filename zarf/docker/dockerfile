@@ -17,7 +17,6 @@ RUN addgroup -g 1000 -S kubrabkaf && \
 
 COPY --from=build_kubrabkaf --chown=kubrabkaf:kubrabkaf /service/cmd/cmd /service/cmd
 WORKDIR /service
-RUN echo ls
 
 USER kubrabkaf
 CMD ["./cmd"]
