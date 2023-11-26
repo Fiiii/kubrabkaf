@@ -1,4 +1,4 @@
-FROM golang:1.21.4 as build_kubrabkafka
+FROM golang:1.21.4 as build_kubrabkaf
 ENV CGO_ENABLED 0
 ARG BUILD_REF
 
@@ -12,12 +12,12 @@ ARG BUILD_DATE
 ARG BUILD_REF
 
 # Add permissions for non-root container user.
-RUN addgroup -g 1000 -S kubrabkafka && \
-		adduser -u 1000 -h /cmd -G kubrabkafka -S kubrabkafka
+RUN addgroup -g 1000 -S kubrabkaf && \
+		adduser -u 1000 -h /cmd -G kubrabkaf -S kubrabkaf
 
-COPY --from=build_kubrabkafka --chown=kubrabkafka:kubrabkafka /service/cmd/cmd /service/cmd
+COPY --from=build_kubrabkaf --chown=kubrabkaf:kubrabkaf /service/cmd/cmd /service/cmd
 WORKDIR /service
 RUN echo ls
 
-USER kubrabkafka
+USER kubrabkaf
 CMD ["./cmd"]

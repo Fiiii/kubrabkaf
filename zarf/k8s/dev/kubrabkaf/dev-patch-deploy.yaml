@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubrabkaf
+  namespace: kubrabkaf-infra
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: Recreate
+
+  template:
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      containers:
+        - name: kubrabkaf
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

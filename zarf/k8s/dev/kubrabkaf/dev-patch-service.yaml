@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubrabkaf
+  namespace: kubrabkaf-infra
+
+spec:
+  type: ClusterIP
+
+  ports:
+  - name: kubrabkaf
+    port: 8080
+    targetPort: kubrabkaf
