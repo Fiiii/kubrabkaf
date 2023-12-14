@@ -11,11 +11,13 @@ var (
 	kafkaUrl  = "localhost:9092"
 )
 
+// EthKafka is a wrapper around the Kafka client.
 type EthKafka struct {
 	KProducer *kafka.Producer
 	KConsumer *kafka.Consumer
 }
 
+// NewEthKafka creates a new Kafka client.
 func NewEthKafka() (*EthKafka, error) {
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": kafkaUrl,

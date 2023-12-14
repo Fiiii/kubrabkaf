@@ -11,8 +11,7 @@ import (
 	"math/big"
 )
 
-const gasLimit uint64 = 21000
-
+// ETHClient - Ethereum client wrapper.
 type ETHClient struct {
 	Client *ethclient.Client
 }
@@ -80,17 +79,16 @@ func (e *ETHClient) TransferEth(privateKey string, toAddress string, amount int6
 		sender   = common.HexToAddress(privateKey)
 		gasLimit = uint64(21000)
 	)
-	// Retrieve the chainid (needed for signer)
 	chainid, err := e.Client.ChainID(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf("get chainID: %w", err)
 	}
-	// Retrieve the pending nonce
+
 	nonce, err := e.Client.PendingNonceAt(context.Background(), sender)
 	if err != nil {
 		return nil, fmt.Errorf("get nonce: %w", err)
 	}
-	// Get suggested gas price
+
 	tipCap, _ := e.Client.SuggestGasTipCap(context.Background())
 	feeCap, _ := e.Client.SuggestGasPrice(context.Background())
 

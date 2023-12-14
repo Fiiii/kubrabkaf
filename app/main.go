@@ -9,12 +9,14 @@ import (
 )
 
 const (
-	serverAddress = ":8080"
+	serverAddress    = ":8080"
+	ethNetworkRPCUrl = "http://localhost:7545"
 )
 
 func main() {
 	srvCfg := &Config{
-		ListenAddr: serverAddress,
+		ListenAddr:       serverAddress,
+		ETHNetworkRPCUrl: ethNetworkRPCUrl,
 	}
 
 	server, err := NewServer(srvCfg)

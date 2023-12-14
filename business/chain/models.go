@@ -1,5 +1,6 @@
 package chain
 
+// Block - represents a block in the blockchain.
 type Block struct {
 	BlockNumber       int64         `json:"blockNumber"`
 	Timestamp         uint64        `json:"timestamp"`
@@ -9,6 +10,7 @@ type Block struct {
 	Transactions      []Transaction `json:"transactions"`
 }
 
+// Transaction - represents single transaction in the blockchain.
 type Transaction struct {
 	Hash     string `json:"hash"`
 	Value    string `json:"value"`
@@ -19,16 +21,19 @@ type Transaction struct {
 	Pending  bool   `json:"pending"`
 }
 
+// TransferEthRequest - represents request details for transferring ETH.
 type TransferEthRequest struct {
 	PrivateKey string `json:"privateKey"`
 	To         string `json:"to"`
 	Amount     int64  `json:"amount"`
 }
 
+// HashResponse - represents response for hash.
 type HashResponse struct {
 	Hash string `json:"hash"`
 }
 
+// BalanceResponse - represents response for balance.
 type BalanceResponse struct {
 	Address string `json:"address"`
 	Balance string `json:"balance"`
@@ -36,6 +41,7 @@ type BalanceResponse struct {
 	Units   string `json:"units"`
 }
 
+// Error - represents error response.
 type Error struct {
 	Code    uint64 `json:"code"`
 	Message string `json:"message"`
