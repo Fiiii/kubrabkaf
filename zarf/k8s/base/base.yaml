@@ -30,7 +30,7 @@ spec:
 
         ports:
           - name: kubrabkaf-api
-            containerPort: 8080
+            containerPort: 3000
 
 ---
 

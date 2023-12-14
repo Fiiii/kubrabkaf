@@ -1,10 +1,10 @@
 FROM golang:1.21.4 as build_kubrabkaf
-ENV CGO_ENABLED 0
+ENV CGO_ENABLED 1
 ARG BUILD_REF
 
 COPY . /service
 
-WORKDIR /service/cmd
+WORKDIR /service/app
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
 
 FROM alpine:3.18
@@ -13,10 +13,11 @@ ARG BUILD_REF
 
 # Add permissions for non-root container user.
 RUN addgroup -g 1000 -S kubrabkaf && \
-		adduser -u 1000 -h /cmd -G kubrabkaf -S kubrabkaf
+		adduser -u 1000 -h /app -G kubrabkaf -S kubrabkaf
 
-COPY --from=build_kubrabkaf --chown=kubrabkaf:kubrabkaf /service/cmd/cmd /service/cmd
+COPY --from=build_kubrabkaf --chown=kubrabkaf:kubrabkaf /service/zarf/certs/. /service/zarf/certs/.
+COPY --from=build_kubrabkaf --chown=kubrabkaf:kubrabkaf /service/app/app /service/app
 WORKDIR /service
 
 USER kubrabkaf
-CMD ["./cmd"]
+CMD ["./app"]
