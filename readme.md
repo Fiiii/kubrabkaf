@@ -1,3 +1,6 @@
+![Plan](assets/tmp.png)
+---
+
 # :wave: Setup section
 ## Initialization
 ```shell
@@ -7,7 +10,6 @@ make dev-init
 ```shell
 make dev-update
 ```
-
 
 # :star2: Kafka section
 
