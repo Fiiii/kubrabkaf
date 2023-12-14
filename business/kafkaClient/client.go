@@ -5,14 +5,20 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
+var (
+	PingTopic = "pingTopic"
+	EthTopic  = "ethTopic"
+	kafkaUrl  = "localhost:9092"
+)
+
 type EthKafka struct {
-	kProducer *kafka.Producer
-	kConsumer *kafka.Consumer
+	KProducer *kafka.Producer
+	KConsumer *kafka.Consumer
 }
 
 func NewEthKafka() (*EthKafka, error) {
 	producer, err := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092",
+		"bootstrap.servers": kafkaUrl,
 	})
 
 	if err != nil {
@@ -20,7 +26,7 @@ func NewEthKafka() (*EthKafka, error) {
 	}
 
 	consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092",
+		"bootstrap.servers": kafkaUrl,
 		"group.id":          "myGroup",
 		"auto.offset.reset": "smallest"})
 
@@ -28,17 +34,13 @@ func NewEthKafka() (*EthKafka, error) {
 		return nil, fmt.Errorf("Failed to create consumer: %s\n", err)
 	}
 
-	err = consumer.SubscribeTopics([]string{"myTopic"}, nil)
+	err = consumer.SubscribeTopics([]string{PingTopic, EthTopic}, nil)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create consumer: %s\n", err)
-	}
-
-	if err != nil {
-		return nil, fmt.Errorf("Failed to create consumer: %s\n", err)
+		return nil, fmt.Errorf("failed to subscribe to topics: %s\n", err)
 	}
 
 	return &EthKafka{
-		kProducer: producer,
-		kConsumer: consumer,
+		KProducer: producer,
+		KConsumer: consumer,
 	}, nil
 }

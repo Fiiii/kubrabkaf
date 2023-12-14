@@ -5,12 +5,10 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
+// Produce sends a message to the Kafka broker.
 func (e *EthKafka) Produce(topic string, kafkaMsg []byte) error {
-	//defer e.kProducer.Close()
-
-	// Delivery report handler for produced messages
 	go func() {
-		for ev := range e.kProducer.Events() {
+		for ev := range e.KProducer.Events() {
 			switch ev := ev.(type) {
 			case *kafka.Message:
 				if ev.TopicPartition.Error != nil {
@@ -22,8 +20,7 @@ func (e *EthKafka) Produce(topic string, kafkaMsg []byte) error {
 		}
 	}()
 
-	// Produce messages to topic (asynchronously)
-	err := e.kProducer.Produce(&kafka.Message{
+	err := e.KProducer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Value:          kafkaMsg,
 	}, nil)
@@ -33,6 +30,6 @@ func (e *EthKafka) Produce(topic string, kafkaMsg []byte) error {
 	}
 
 	// Wait for message deliveries before shutting down
-	e.kProducer.Flush(15 * 1000)
+	e.KProducer.Flush(15 * 1000)
 	return nil
 }

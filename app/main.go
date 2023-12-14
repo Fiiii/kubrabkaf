@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"kubrabkaf/business/kafkaClient"
 	"log"
-	"os"
 	"sync"
 	"time"
 )
@@ -23,8 +23,8 @@ func main() {
 	}
 
 	// Handle OS signals to gracefully shut down the consumer
-	sig := make(chan os.Signal, 1)
 	var wg sync.WaitGroup
+	wgDone := make(chan bool)
 
 	// Start the producer with a 5 seconds interval
 	wg.Add(1)
@@ -35,7 +35,7 @@ func main() {
 			select {
 			case <-tn:
 				fmt.Println("Producing message...")
-				err = server.EthKafka.Produce("myTopic", []byte("Hello, World!"+time.Now().String()))
+				err = server.EthKafka.Produce(kafkaClient.PingTopic, []byte("ping! "+time.Now().String()))
 				if err != nil {
 					fmt.Printf("failed to produce message: %v\n", err)
 				}
@@ -50,16 +50,25 @@ func main() {
 		server.Start()
 	}()
 
-	// Start the consumer
+	// Start the consumers
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
 		server.EthKafka.Consume()
 	}()
 
-	<-sig
-	fmt.Println("Received termination signal. Closing...")
+	go func() {
+		wg.Wait()
+		close(wgDone)
+	}()
+	//<-sig
+	//fmt.Println("Received termination signal. Closing...")
 
 	// Close the consumer and wait for it to finish processing
-	wg.Wait()
+
+	select {
+	case <-wgDone:
+		break
+	}
+
 }

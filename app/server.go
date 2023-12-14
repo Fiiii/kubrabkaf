@@ -95,7 +95,11 @@ func (s *APIServer) SendETH(w http.ResponseWriter, r *http.Request) error {
 		return fmt.Errorf("error marshalling request body: %v", err)
 	}
 
-	s.EthKafka.Produce("send_eth", marshalled)
+	// Produce sends a message to the Kafka broker.
+	err = s.EthKafka.Produce(kafkaClient.EthTopic, marshalled)
+	if err != nil {
+		fmt.Printf("failed to produce message: %v\n", err)
+	}
 
 	h, err := s.ETHClient.TransferEth(transferData.PrivateKey, transferData.To, transferData.Amount)
 	if err != nil {

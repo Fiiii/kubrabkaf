@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
+// Consume reads messages from the Kafka broker.
 func (e *EthKafka) Consume() {
-
 	run := true
 	for run {
-		msg, err := e.kConsumer.ReadMessage(time.Second)
+		msg, err := e.KConsumer.ReadMessage(time.Second)
 		if err == nil {
 			fmt.Printf("<--- Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
 		} else if !err.(kafka.Error).IsTimeout() {
