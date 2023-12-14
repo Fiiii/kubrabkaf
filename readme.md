@@ -14,7 +14,7 @@ make dev-update
 # :star2: Kafka section
 
 ## Create kafka topic example
-### Run kafka container
+### Run bash
 ```shell
 kubectl exec -it kafka-broker-7dc5d6749d-vgq65 -n kafka -- /bin/bash
 ```
